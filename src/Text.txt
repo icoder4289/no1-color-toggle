@@ -1,0 +1,79 @@
+โจทย์: กดปุ่ม toggle ให้แสดงสีแดง สีเหลือง สีเขียว วนไปเรื่อยๆ จนกว่าจะกดปุ่ม toggle อีกครั้ง
+======================================
+
+import: useState, useEffect
+
+export default function Toggle(){
+    1.ประกาศตัวแปร State 2 ตัว
+    2.ประกาศตัวแปร Array 1 ตัว
+    3.useEffect(() => {...}
+    4.return(...)
+}
+======================================
+
+1.ประกาศตัวแปร State 2 ตัว
+
+const [isOpen, setIsOpen] = useState(false);
+const [colorIndex, setColorIndex] = useState(0);
+-----------------------------
+อธิบาย: 
+1.ประกาศตัวแปรชื่อว่า isOpen และกำหนดค่าเริ่มต้นเป็น false
+2.ประกาศตัวแปรชื่อว่า colorIndex และกำหนดค่าเริ่มต้นเป็น 0
+======================================
+
+2.ประกาศตัวแปร Array 1 ตัว
+const colors = ['red', 'yellow', 'green'];
+-----------------------------
+อธิบาย: ประกาศตัวแปรชื่อว่า colors และกำหนดค่าเริ่มต้นด้วยสตริง 3 ค่า
+======================================
+
+3.useEffect(() => {...}
+useEffect(() => {
+        let interval;
+        if (isOpen) {
+          interval = setInterval(() => {
+            setColorIndex((colorIndex + 1) % colors.length);
+          }, 1000);
+        }
+        return () => clearInterval(interval);
+      }, [isOpen, colorIndex]);
+-----------------------------
+อธิบาย: 
+1.ประกาศตัวแปร interval เพื่อเก็บ ID ของช่วงเวลา
+2.ใช้คำสั่ง if ตรวจสอบว่าสถานะ isOpen= true หรือไม่?
+3.ถ้าเป็น true จะเรียกฟังก์ชัน setInterval เพื่อตั้งค่าช่วงเวลาที่เกิดซ้ำๆ
+
+4.ฟังก์ชัน setInterval รับสองอาร์กิวเมนต์ คือ
+- ฟังก์ชันเรียกกลับ: setColorIndex((colorIndex + 1) % colors.length
+= setColorIndex((0 + 1) % 3= 1
+- ช่วงเวลาเป็นมิลลิวินาที: ช่วงเวลาถูกกำหนดเป็น 1,000 มิลลิวินาที (1 วินาที)
+
+5.ส่ง setColorIndex= 1 ไปยัง div: style={{ backgroundColor: colors[colorIndex]
+ค่าการเปลี่ยนแปลงของ colorIndex= 1 
+ดังนั้น colors[1]= yellow วนไปเรื่อยๆ จนกว่าจะกดปุ่ม Toggle ให้สถานะเป็น false
+
+6.clearInterval(interval): คือล้างช่วงข้อมูลที่เก็บไว้ใน interval ทำให้หยุดจับเวลาเมื่อมีการคลิกปุ่ม Toggle ให้สถานะเป็น false
+
+ตัวอย่าง:
+setColorIndex((0 + 1= 1) % 3= 1
+setColorIndex((1 + 1= 2) % 3= 2
+setColorIndex((2 + 1= 3) % 3= 0
+setColorIndex((0 + 1= 1) % 3= 1
+setColorIndex((1 + 1= 2) % 3= 2
+setColorIndex((2 + 1= 3) % 3= 0
+ไปเรื่อยๆ.. จนกว่าปุ่ม Toggle จะมีสถานะเป็น false
+======================================
+
+4.return(...)
+<div>
+    <button onClick={() => setIsOpen(!isOpen)}>Toggle</button>
+    {isOpen && <div style={{ backgroundColor: colors[colorIndex], width: '100px', height: '100px' }}></div>}
+</div>
+-----------------------------
+อธิบาย: 
+1.สร้างปุ่มโดยมีอีเวนต์ onClick
+2.เมื่อคลิกปุ่มจะเข้าสู่ฟังก์ชัน setIsOpen(!isOpen) - ซึ่งค่าเริ่มต้นของ isOpen= false 
+- ดังนั้นถ้าเป็น !isOpen= true
+3.div: style={{ backgroundColor: colors[colorIndex]
+ค่าเริ่มต้นของ colorIndex= 0 
+ดังนั้น colors[0]= red
