@@ -1,4 +1,5 @@
 # Getting Started with Create React App
+Topic: Pressing the toggle button shows red, yellow, green, repeating until you press the toggle button again.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
